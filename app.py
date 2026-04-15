@@ -1,7 +1,7 @@
 from flask import Flask, request, jsonify
 from google import genai
 app = Flask(__name__)
-client = genai.Client(api_key="API_KEY")
+client = genai.Client(api_key="API_Key_Here")
 CORRECT_PIN = "1010" 
 attempt_count = 0
 max_attempts = 3
