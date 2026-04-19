@@ -1,0 +1,5 @@
+<ComponentSchema packageName="com.iwsdk.components">
+  <Component name="LEDLight" description="EliCS component: LEDLight">
+    <EnumAttribute name="mode"/>
+  </Component>
+</ComponentSchema>

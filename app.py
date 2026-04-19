@@ -1,7 +1,13 @@
+import os
 from flask import Flask, request, jsonify
+from flask_cors import CORS
 from google import genai
+from dotenv import load_dotenv
+
+load_dotenv()
 app = Flask(__name__)
-client = genai.Client(api_key="API_Key_Here")
+CORS(app)
+client = genai.Client(api_key=os.environ["GEMINI_API_KEY"])
 CORRECT_PIN = "1010" 
 attempt_count = 0
 max_attempts = 3
@@ -46,4 +52,4 @@ def input_code():
             "message": f"Incorrect logic sequence. {attempts_left} attempts remaining."
         })
 if __name__ == '__main__':
-    app.run(debug=True, port=5000)
+    app.run(debug=True, port=5001)

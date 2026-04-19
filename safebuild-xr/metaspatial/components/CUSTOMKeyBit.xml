@@ -1,0 +1,6 @@
+<ComponentSchema packageName="com.iwsdk.components">
+  <Component name="KeyBit" description="EliCS component: KeyBit">
+    <IntAttribute name="bitIndex" defaultValue="0"/>
+    <BooleanAttribute name="isOn" defaultValue="false"/>
+  </Component>
+</ComponentSchema>

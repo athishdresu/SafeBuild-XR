@@ -1,0 +1,72 @@
+<style>
+  .panel {
+    width: 55;
+    padding: 2.5;
+    background-color: #09090b;
+    border-color: #22c55e;
+    border-width: 0.2;
+    border-radius: 2.5;
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+  }
+
+  .section-label {
+    font-size: 1.5;
+    color: #71717a;
+    text-align: center;
+    font-weight: medium;
+  }
+
+  #pin-display {
+    font-size: 8;
+    font-weight: bold;
+    color: #22c55e;
+    margin-top: 0.5;
+    margin-bottom: 0.5;
+    text-align: center;
+  }
+
+  #circuit-state {
+    font-size: 2;
+    color: #fafafa;
+    background-color: #27272a;
+    padding-top: 0.4;
+    padding-bottom: 0.4;
+    padding-left: 1;
+    padding-right: 1;
+    border-radius: 1;
+    margin-top: 0.5;
+    text-align: center;
+  }
+
+  .divider {
+    height: 0.1;
+    background-color: #27272a;
+    width: 100%;
+    margin-top: 1.8;
+    margin-bottom: 1.8;
+  }
+
+  .tutor-label {
+    font-size: 1.8;
+    color: #22c55e;
+    font-weight: medium;
+    margin-bottom: 1;
+    text-align: center;
+  }
+
+  #tutor-msg {
+    font-size: 2;
+    color: #d4d4d8;
+    text-align: center;
+  }
+</style>
+<div class="panel">
+  <span class="section-label">4-BIT PIN  (MSB → LSB)</span>
+  <span id="pin-display">0000</span>
+  <span id="circuit-state">IDLE</span>
+  <div class="divider"></div>
+  <span class="tutor-label">AI Tutor</span>
+  <span id="tutor-msg">Toggle the 4 amber bits, then press SUBMIT.</span>
+</div>
