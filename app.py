@@ -17,15 +17,21 @@ def input_code():
     global attempt_count
     data = request.get_json()
     user_input = data.get("pin")
+    attempt_count += 1
+    if attempt_count > max_attempts:
+        return jsonify({
+            "state": "LOCKED",
+            "led": "RED_FLASHING",
+            "message": "Safe is permanently locked.",
+            "tutor_note": "The D Flip-Flop is latched high — the circuit is permanently disabled until power is reset."
+        })
     if user_input == CORRECT_PIN:
-        attempt_count = 0
         return jsonify({
             "state": "OPEN",
             "led": "GREEN",
             "message": "Comparator Output: HIGH. Door opened!"
         })
     else:
-        attempt_count += 1
         if attempt_count >= max_attempts:
             prompt = "Explain in 2 short sentences to a beginner electronics student why failing a 3-attempt limit triggers a D Flip-Flop to latch high and permanently lock a circuit."
             try:
