@@ -17,42 +17,35 @@ def input_code():
     global attempt_count
     data = request.get_json()
     user_input = data.get("pin")
-    attempt_count += 1
-    if attempt_count > max_attempts:
-        return jsonify({
-            "state": "LOCKED",
-            "led": "RED_FLASHING",
-            "message": "Safe is permanently locked.",
-            "tutor_note": "The D Flip-Flop is latched high — the circuit is permanently disabled until power is reset."
-        })
-    if user_input == CORRECT_PIN:
+    if user_input == CORRECT_PIN and attempt_count < max_attempts:
         return jsonify({
             "state": "OPEN",
             "led": "GREEN",
             "message": "Comparator Output: HIGH. Door opened!"
         })
-    else:
-        if attempt_count >= max_attempts:
-            prompt = "Explain in 2 short sentences to a beginner electronics student why failing a 3-attempt limit triggers a D Flip-Flop to latch high and permanently lock a circuit."
-            try:
-                response = client.models.generate_content(
-                    model='gemini-2.0-flash',
-                    contents=prompt
-                )
-                ai_explanation = response.text
-            except Exception as e:
-                ai_explanation = "The circuit has reached its maximum flip-flop state. The latch is permanently high, cutting power to the solenoid."
-            return jsonify({
-                "state": "LOCKED",
-                "led": "RED_FLASHING",
-                "message": "Safe is permanently locked.",
-                "tutor_note": ai_explanation
-            })
-        attempts_left = max_attempts - attempt_count
+
+    attempt_count += 1
+
+    if attempt_count >= max_attempts:
+        prompt = "Explain in 2 short sentences to a beginner electronics student why failing a 3-attempt limit triggers a D Flip-Flop to latch high and permanently lock a circuit."
+        try:
+            response = client.models.generate_content(model='gemini-2.0-flash', contents=prompt)
+            ai_explanation = response.text
+        except Exception as e:
+            print(f"[Gemini Error] {e}")
+            ai_explanation = "The circuit has reached its maximum flip-flop state. The latch is permanently high, cutting power to the solenoid."
         return jsonify({
-            "state": "ERROR",
-            "led": "RED",
-            "message": f"Incorrect logic sequence. {attempts_left} attempts remaining."
+            "state": "LOCKED",
+            "led": "RED_FLASHING",
+            "message": "Safe is permanently locked.",
+            "tutor_note": ai_explanation
         })
+
+    attempts_left = max_attempts - attempt_count
+    return jsonify({
+        "state": "ERROR",
+        "led": "RED",
+        "message": f"Incorrect logic sequence. {attempts_left} attempts remaining."
+    })
 if __name__ == '__main__':
     app.run(debug=True, port=5001)

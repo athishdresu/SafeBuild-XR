@@ -25,6 +25,8 @@ export class SubmitSystem extends createSystem({
   private doSubmit() {
     const fetchPending = this.globals.fetchPending as Signal<boolean>;
     if (fetchPending.peek()) return;
+    const result = (this.globals.circuitResult as Signal<ApiResult | null>).peek();
+    if (result?.state === 'OPEN' || result?.state === 'LOCKED') return;
 
     fetchPending.value = true;
     const pin = (this.globals.currentPin as Signal<string>).peek();
