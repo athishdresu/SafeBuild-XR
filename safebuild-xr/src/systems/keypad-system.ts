@@ -59,12 +59,11 @@ export class KeypadSystem extends createSystem({
       }
     });
 
-    // Glow the wire that connects this bit — emits its own wire color when on
     const bitIndex = entity.getValue(KeyBit, 'bitIndex') as number;
     const wireMats = this.globals.wireMats as MeshStandardMaterial[] | undefined;
     if (wireMats?.[bitIndex]) {
       const mat = wireMats[bitIndex];
-      mat.emissive.copy(isOn ? mat.color : COLOR_OFF);
+      mat.emissive.set(isOn ? 0x00e633 : 0x000000);
       mat.emissiveIntensity = isOn ? 1.5 : 0;
     }
   }

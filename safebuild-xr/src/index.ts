@@ -176,12 +176,8 @@ World.create(document.getElementById('scene-container') as HTMLDivElement, {
   // Wires — each bit sphere → chip, converging at staggered y
   // Simple straight diagonals, clearly readable left→right
   // -------------------------------------------------------
-  const wireColors = [
-    new Color(0.9, 0.1, 0.1),   // bit 3 — red
-    new Color(0.1, 0.4, 1.0),   // bit 2 — blue
-    new Color(0.95, 0.85, 0.0), // bit 1 — yellow
-    new Color(0.1, 0.8, 0.1),   // bit 0 — green
-  ];
+  const wireRed = new Color(0.9, 0.1, 0.1);
+  const wireColors = [wireRed, wireRed, wireRed, wireRed];
   // Chip entry points: exact left face, spread in z within chip's depth
   // Chip z range in scene: -1.9 ± (0.019*CHIP_SCALE/2) = -1.9 ± 0.114
   const CHIP_LEFT   = CHIP_CX - CHIP_HW;  // 0.352
