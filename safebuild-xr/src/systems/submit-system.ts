@@ -32,7 +32,7 @@ export class SubmitSystem extends createSystem({
     const pin = (this.globals.currentPin as Signal<string>).peek();
     console.log('[SafeBuild XR] Submitting PIN:', pin);
 
-    fetch('/input_code', {
+    fetch('/api/input_code', {
       method: 'POST',
       headers: { 'Content-Type': 'application/json' },
       body: JSON.stringify({ pin }),
