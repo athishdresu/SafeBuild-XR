@@ -4,9 +4,21 @@
     {
       "src": "app.py",
       "use": "@vercel/python"
+    },
+    {
+      "src": "safebuild-xr/**",
+      "use": "@vercel/static"
     }
   ],
   "routes": [
+    {
+      "src": "/",
+      "dest": "/safebuild-xr/index.html"
+    },
+    {
+      "src": "/(.*\\.(js|css|html|glb|gltf|png|jpg|jpeg|ico|json|wasm))",
+      "dest": "/safebuild-xr/$1"
+    },
     {
       "src": "/(.*)",
       "dest": "app.py"
