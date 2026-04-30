@@ -16,11 +16,15 @@
   "routes": [
     {
       "src": "/input_code",
-      "dest": "app.py"
+      "dest": "/app.py"
+    },
+    {
+      "src": "/",
+      "dest": "/safebuild-xr/dist/index.html"
     },
     {
       "src": "/(.*)",
-      "dest": "safebuild-xr/dist/$1"
+      "dest": "/safebuild-xr/dist/$1"
     }
   ]
 }
