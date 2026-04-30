@@ -9,7 +9,7 @@ import {
   eq,
 } from '@iwsdk/core';
 import type { Signal } from '@preact/signals-core';
-import { LEDLight } from '../components/circuit.js';
+import { LEDLight, OutputLED } from '../components/circuit.js';
 import type { ApiResult } from './submit-system.js';
 
 const GREEN = new Color(0, 1, 0.2);
@@ -18,6 +18,7 @@ const OFF = new Color(0, 0, 0);
 
 export class CircuitResponseSystem extends createSystem({
   led: { required: [LEDLight] },
+  outLed: { required: [OutputLED] },
   panel: {
     required: [PanelUI, PanelDocument],
     where: [eq(PanelUI, 'config', './ui/circuit.json')],
@@ -25,6 +26,9 @@ export class CircuitResponseSystem extends createSystem({
 }) {
   private flashTimer = 0;
   private flashOn = false;
+  private doorObject: any = null;
+  private doorTargetAngle = 0;
+  private doorCurrentAngle = 0;
 
   init() {
     const circuitResult = this.globals.circuitResult as Signal<ApiResult | null>;
@@ -55,6 +59,20 @@ export class CircuitResponseSystem extends createSystem({
   }
 
   update(delta: number) {
+    // Lazy-fetch door reference (stored in globals after world setup)
+    if (!this.doorObject) {
+      this.doorObject = (this.globals as any).doorObject ?? null;
+    }
+
+    // Hinge animation — smooth lerp toward target angle
+    if (this.doorObject) {
+      const diff = this.doorTargetAngle - this.doorCurrentAngle;
+      if (Math.abs(diff) > 0.001) {
+        this.doorCurrentAngle += diff * Math.min(delta * 2.5, 1);
+        this.doorObject.rotation.y = this.doorCurrentAngle;
+      }
+    }
+
     for (const entity of this.queries.led.entities) {
       if (entity.getValue(LEDLight, 'mode') !== 'flashing') continue;
       this.flashTimer += delta;
@@ -76,6 +94,16 @@ export class CircuitResponseSystem extends createSystem({
       if (mode !== 'flashing') {
         this.setLEDColor(entity, mode === 'green' ? GREEN : RED);
       }
+    }
+
+    // Output LED: only lights green when safe opens
+    for (const entity of this.queries.outLed.entities) {
+      this.setLEDColor(entity, result.state === 'OPEN' ? GREEN : OFF);
+    }
+
+    // Open the door on correct code
+    if (result.state === 'OPEN') {
+      this.doorTargetAngle = Math.PI * 0.65;
     }
   }
 

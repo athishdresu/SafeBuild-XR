@@ -14,3 +14,6 @@ export const LEDLight = createComponent('LEDLight', {
     default: 'off',
   },
 });
+
+// Marks the breadboard output LED — only lights green on OPEN
+export const OutputLED = createComponent('OutputLED', {});
