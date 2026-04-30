@@ -6,22 +6,21 @@
       "use": "@vercel/python"
     },
     {
-      "src": "safebuild-xr/**",
-      "use": "@vercel/static"
+      "src": "safebuild-xr/package.json",
+      "use": "@vercel/static-build",
+      "config": {
+        "distDir": "dist"
+      }
     }
   ],
   "routes": [
     {
-      "src": "/",
-      "dest": "/safebuild-xr/index.html"
-    },
-    {
-      "src": "/(.*\\.(js|css|html|glb|gltf|png|jpg|jpeg|ico|json|wasm))",
-      "dest": "/safebuild-xr/$1"
+      "src": "/input_code",
+      "dest": "app.py"
     },
     {
       "src": "/(.*)",
-      "dest": "app.py"
+      "dest": "safebuild-xr/dist/$1"
     }
   ]
 }
