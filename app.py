@@ -12,7 +12,7 @@ CORRECT_PIN = "1010"
 attempt_count = 0
 max_attempts = 3
 
-@app.route('/input_code', methods=['POST'])
+@app.route('/api/input_code', methods=['POST'])
 def input_code():
     global attempt_count
     data = request.get_json()
